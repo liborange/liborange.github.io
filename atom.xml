@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>liborange</title>
+  <subtitle>Seven days one Dream</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.liborange.top/"/>
+  <updated>2017-07-18T12:58:56.000Z</updated>
+  <id>http://blog.liborange.top/</id>
+  
+  <author>
+    <name>Liborange</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Dubbo 微内核</title>
+    <link href="http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/"/>
+    <id>http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/</id>
+    <published>2017-07-16T16:01:16.000Z</published>
+    <updated>2017-07-18T12:58:56.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Dubbo 是一个开放的系统，有多种通讯框架（Mina/Netty/Grizzly），多种序列化协议（Hessian/JSON/PB），多种远程调用协议（DBO/RMI/WS）去支持，从(服务框架实践与探索)[]可以了解到从设计之初就设计为&lt;strong&gt;微内核+插件&lt;/strong&gt;的方式，系统或者用户有多种实现，通过插件方式选择实现，灵活度很高。&lt;/p&gt;
+&lt;p&gt;微内核的实现也从Dubbo 1使用的OSGI，过渡到Dubbo2使用的SPI。SPI作为dubbo新的灵魂，从这里入手了解Dubbo，从而能更方便理解后续服务暴露，服务发现，服务治理这些功能。当然Dubbo也没有完全使用jdk SPI，而是做了更灵活的定制化实现，&lt;/p&gt;
+&lt;h2 id=&quot;核心概念&quot;&gt;&lt;a href=&quot;#核心概念&quot; class=&quot;headerlink&quot; title=&quot;核心概念&quot;&gt;&lt;/a&gt;核心概念&lt;/h2&gt;&lt;p&gt;简单概括&lt;strong&gt;微内核+插件&lt;/strong&gt;的实现原理：微内核将所有&lt;code&gt;扩展点&lt;/code&gt;创建出相应的&lt;code&gt;自适应实例&lt;/code&gt;，而后根据配置在/META-INF特殊目录下配置的信息实现所有的&lt;code&gt;扩展实例&lt;/code&gt;，微内核初始化的过程就结束了。在真正使用的时候，调用自适应实例的方法时传入url，根据其中对应的参数，选择一个扩展实例作为代码真正的执行。（在看完后面的介绍之后再看这里的总结可能会理解的更清楚）其中有几个概念:扩展点(扩展类)、自适应实例、扩展实例。后续会不断出现，看多了自然就懂了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="Dubbo" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/Dubbo/"/>
+    
+    
+      <category term="dubbo" scheme="http://blog.liborange.top/tags/dubbo/"/>
+    
+      <category term="spi" scheme="http://blog.liborange.top/tags/spi/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://blog.liborange.top/2017/07/17/hello-world/"/>
+    <id>http://blog.liborange.top/2017/07/17/hello-world/</id>
+    <published>2017-07-16T16:00:00.000Z</published>
+    <updated>2017-07-18T09:28:10.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;第一篇，下周就有 权力的游戏 看了。&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
