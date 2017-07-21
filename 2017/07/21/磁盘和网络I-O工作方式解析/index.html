@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="I/O 模型," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="liborange" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。  一次磁盘IO大约经过图中的过程：  DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝">
+<meta name="keywords" content="I&#x2F;O 模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磁盘和网络I&#x2F;O工作方式解析">
+<meta property="og:url" content="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/index.html">
+<meta property="og:site_name" content="liborange">
+<meta property="og:description" content="IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。  一次磁盘IO大约经过图中的过程：  DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/ioModel.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/FiveIOModel.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/memoryCache.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/NoZeroCopy.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/zeroCopy.png">
+<meta property="og:updated_time" content="2017-07-21T16:08:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="磁盘和网络I&#x2F;O工作方式解析">
+<meta name="twitter:description" content="IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。  一次磁盘IO大约经过图中的过程：  DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝">
+<meta name="twitter:image" content="http://liborange.qiniudn.com/hexo_post/ioModel.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'YUVRMA10ZW',
+      apiKey: '8d929367ba8ad759af740082f29b3a96',
+      indexName: 'liborange',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"查无此文: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/"/>
+
+
+
+
+
+  <title>磁盘和网络I/O工作方式解析 | liborange</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82055412-3', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liborange</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Seven days one Dream</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liborange">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://liborange.qiniudn.com/hexo_logo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liborange">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">磁盘和网络I/O工作方式解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T21:22:43+08:00">
+                2017-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,940
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/ioModel.png" alt="磁盘I/O 模型" title="磁盘I/O 模型"></p>
+<p>一次磁盘IO大约经过图中的过程：</p>
+<ol>
+<li>DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝）</li>
+<li>缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到用户内存中的内容了</li>
+</ol>
+<a id="more"></a>
+<h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h3><p>先来认识一下上图中的DMA，早期磁盘和内存之间的数据传输需要通过CPU来控制，比如我们想从磁盘加载一个文件，文件内容拷贝过程需要经过CPU存储转发，很显然CPU时间和磁盘读取时间不是一个量级的，这样极容易造成CPU的极度浪费，于是出现了一个专门用于处理数据传输的小伙子DMA，CPU只需要向DMA控制器下达指令，让DMA控制器来处理数据的传送即可。</p>
+<h3 id="空间划分"><a href="#空间划分" class="headerlink" title="空间划分"></a>空间划分</h3><p>为了安全和可靠，内存被划分成了<code>用户空间</code>和<code>内核空间</code>.</p>
+<p><strong>用户空间</strong>，是应用程序使用的内存空间，比如jvm中的堆内存，栈内存等都是在用户空间。</p>
+<p><strong>内核空间</strong>，是操作系统代码执行时使用的空间，内核代码有特别的权利，比如它能与设备控制器通信，每一次系统调用都会存在<strong>两个内存空间之间的相互切换</strong>，比如一次磁盘IO过程文件数据要先拷贝到内核空间而后再拷贝到用户空间。两次内存拷贝，看似费时，其实是操作系统完成了文件read，write功能的封装（不然每个程序都要写文件读取的底层代码吗），同时保证系统稳定性，牺牲的效率得到的收益更大。</p>
+<h2 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h2><p>以网络I/O为例说明，网络I/O的本质是socket的读取，socket可以看成是数据流，从网络中的数据到用户空间，经过了一下过程：</p>
+<ol>
+<li>首先通过DMA copy将网卡buffer中的数据拷贝到socket buffer中</li>
+<li>然后通过DMA copy将数据从sokcet buffer中拷贝到kernel buffer</li>
+<li>最后CPU copy将数据kernel buffer复制到user buffer</li>
+</ol>
+<p>这个过程有三次数据的拷贝，网卡 -&gt; socket -&gt; kernel -&gt; user，由于网卡-&gt; kernel的拷贝操作系统完成，IO模型关心的是kernel buffer可读，与user buffer可读的两个状态，在不断进化中，产生了五种I/O模型如下图所示，</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/FiveIOModel.png" alt="五种I/O模型" title="五种I/O模型"></p>
+<p>数据读取过程被划分成了两个阶段：第一阶段等待数据（kernel buffer可读），第二阶段将数据从内核空间拷贝到用户空间。</p>
+<p>前四种模型都会阻塞在第二阶段，区别在于第一阶段的处理策略，可以一直阻塞等待kernel buffer可读（阻塞I/O），有点浪费；也可以不断轮询（非阻塞I/O），稍稍进步了一点，可以在轮询间隔做其他的事情；在第一次检查时绑定事件，满足事件时系统通知线程处理（I/O复用），很大进步更人性化，实现方式有 select，poll，epoll；</p>
+<p>最后一种模型在第二阶段也不会被阻塞，系统调用立即返回，并且进程在等待I/O完成的时候，不会发生阻塞。直到当操作完成的时候内核就会产生相应的信号，并通知给进程。</p>
+<p>目前java NIO，Netty，Redis在IO模型选择上都是用了IO多路复用，可以一次处理更多的链接。同时也要辩证看待这五种模型，如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用multi-threading + blocking IO的web server性能更好，可能延迟还更大。<strong>select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接</strong>。</p>
+<h2 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h2><p>Linux内核提供一种访问磁盘文件的特殊方式，它可以将内存中某块地址空间和我们要指定的磁盘文件相关联，从而把我们对这块内存的访问转换为对磁盘文件的访问，这种技术称为内存映射（Memory Mapping）。</p>
+<p>操作系统将内存中的某一块区域与磁盘中的文件关联起来，当要访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/memoryCache.png" alt="内存映射原理" title="内存映射原理"></p>
+<p>可以看到内存映射是将磁盘上的一段存储地址和逻辑内存（逻辑上的概念，实际不存在）对应起来，而后访问的时候，也就是过程二，到内存找这段文件，必然后导致访问不到，而建立内存映射并没有实际拷贝数据，这时，MMU在地址映射表中是无法找到与ptr相对应的物理地址的，也就是MMU失败，将产生一个缺页中断，缺页中断的中断响应函数会在swap中寻找相对应的页面。</p>
+<p>通过read()方式读取文件，从前文分析可知会进行<strong>两次数据拷贝</strong>，而mmap()也是系统调用，如前所述，mmap()中没有进行数据拷贝，真正的数据拷贝是在缺页中断处理时进行的，由于mmap()将文件直接映射到用户空间，所以中断处理函数根据这个映射关系，直接将文件从硬盘拷贝到用户空间，只进行了<strong>一次数据拷贝</strong> 。因此，内存映射的效率要比read/write效率高。</p>
+<p>在大文件的拷贝时，使用内存映射的方式相比read()、write()这些系统调用，效率会高很多。TODO: 在具体场景使用内存映射完成大文件拷贝。</p>
+<h2 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h2><p><img src="http://liborange.qiniudn.com/hexo_post/NoZeroCopy.png" alt="正常操作数据的过程" title="正常操作数据的过程"></p>
+<p>回顾一下用户从磁盘读取文件通过网络发送的过程，程序只能操作用户空间的内存，所以需要通过系统调用read(),将数据加载到用户空间的buffer中，而后系统调用write()将数据写到kernel buffer，DMA会将kernel buffer的数据写到socket buffer，再写到 网卡buffer，<strong>这个过程数据没有变化转了一大圈，经过两次系统调用，五次数据拷贝</strong>，终于从磁盘到了网卡，聪明的人类对他进行了改进，如下：</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/zeroCopy.png" alt="零拷贝操作数据过程" title="零拷贝操作数据过程"></p>
+<p>数据经过user buffer只是因为用户程序无法访问核心空间，有点墨守成规因循守旧的意思，改革，让数据在kernel buffer中直接到socket buffer，少了两次系统调用，如果使用阻塞模型，这两次系统调用对线程来说都是阻塞的，如此一来对线程来说解放出来的时间不是一点两点，因为io操作相比CPU时间太久~~~</p>
+<p>TODO：netty的零拷贝技术，等待研究netty源码的时候补充</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://blog.csdn.net/mg0832058/article/details/5890688" target="_blank" rel="external">http://blog.csdn.net/mg0832058/article/details/5890688</a></li>
+<li><a href="https://segmentfault.com/a/1190000007692223" target="_blank" rel="external">https://segmentfault.com/a/1190000007692223</a></li>
+<li><a href="http://www.cnblogs.com/xrq730/p/5074199.html" target="_blank" rel="external">http://www.cnblogs.com/xrq730/p/5074199.html</a></li>
+<li><a href="https://my.oschina.net/plucury/blog/192577" target="_blank" rel="external">零拷贝</a></li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>开心就好</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://liborange.qiniudn.com/hexo_Wechat.jpeg" alt="Liborange WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://liborange.qiniudn.com/hexo_alipay.jpeg" alt="Liborange Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Liborange
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/" title="磁盘和网络I/O工作方式解析">http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/I-O-模型/" rel="tag"># I/O 模型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/21/《大型网站系统与Java中间件实践》读书笔记（一）/" rel="next" title="《大型网站系统与Java中间件实践》读书笔记（一）">
+                <i class="fa fa-chevron-left"></i> 《大型网站系统与Java中间件实践》读书笔记（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://liborange.qiniudn.com/hexo_logo.jpeg"
+               alt="Liborange" />
+          <p class="site-author-name" itemprop="name">Liborange</p>
+           
+              <p class="site-description motion-element" itemprop="description">荆轲刺秦王</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#几个概念"><span class="nav-number">1.</span> <span class="nav-text">几个概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DMA"><span class="nav-number">1.1.</span> <span class="nav-text">DMA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空间划分"><span class="nav-number">1.2.</span> <span class="nav-text">空间划分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO模型"><span class="nav-number">2.</span> <span class="nav-text">IO模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存映射"><span class="nav-number">3.</span> <span class="nav-text">内存映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零拷贝"><span class="nav-number">4.</span> <span class="nav-text">零拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liborange</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

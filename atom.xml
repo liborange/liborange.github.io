@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.liborange.top/"/>
-  <updated>2017-07-18T12:58:56.000Z</updated>
+  <updated>2017-07-21T16:08:50.000Z</updated>
   <id>http://blog.liborange.top/</id>
   
   <author>
@@ -16,11 +16,60 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>磁盘和网络I/O工作方式解析</title>
+    <link href="http://blog.liborange.top/2017/07/21/%E7%A3%81%E7%9B%98%E5%92%8C%E7%BD%91%E7%BB%9CI-O%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%E8%A7%A3%E6%9E%90/"/>
+    <id>http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/</id>
+    <published>2017-07-21T13:22:43.000Z</published>
+    <updated>2017-07-21T16:08:50.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/ioModel.png&quot; alt=&quot;磁盘I/O 模型&quot; title=&quot;磁盘I/O 模型&quot;&gt;&lt;/p&gt;
+&lt;p&gt;一次磁盘IO大约经过图中的过程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝）&lt;/li&gt;
+&lt;li&gt;缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到用户内存中的内容了&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="I/O 模型" scheme="http://blog.liborange.top/tags/I-O-%E6%A8%A1%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《大型网站系统与Java中间件实践》读书笔记（一）</title>
+    <link href="http://blog.liborange.top/2017/07/21/%E3%80%8A%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E7%B3%BB%E7%BB%9F%E4%B8%8EJava%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E8%B7%B5%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://blog.liborange.top/2017/07/21/《大型网站系统与Java中间件实践》读书笔记（一）/</id>
+    <published>2017-07-21T12:19:47.000Z</published>
+    <updated>2017-07-21T16:12:19.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;《大型网站系统与Java中间件实践》的前两章内容总结，首先了解分布式系统的概念，其基本特性是什么样子的；然后介绍单机服务的组成与通信以及分布式系统类比单机系统时各个组件对应的内容，同时对分布式系统面临的问题做了剖析。第二章内容从服务架构、数据库架构、中间件层面对一个网站架构演化做了分析与讲解。&lt;/p&gt;
+&lt;h2 id=&quot;了解分布式系统&quot;&gt;&lt;a href=&quot;#了解分布式系统&quot; class=&quot;headerlink&quot; title=&quot;了解分布式系统&quot;&gt;&lt;/a&gt;了解分布式系统&lt;/h2&gt;&lt;p&gt;《Distributed systems concepts and Design》是这样描述分布式系统的：&lt;strong&gt;A distribute system is one in which components located at networked computes communication and coordinate their actions only by messages.&lt;/strong&gt; 借此了解一下分布式系统的定义：由多个节点构成，不同节点完成不同的功能，多个节点之间通过网络通信的方式相互协作，协同完成某一个大的功能。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/DistributeSystemTopology.png&quot; alt=&quot;分布式系统拓扑结构&quot; title=&quot;Optional title&quot;&gt;&lt;/p&gt;
+&lt;p&gt;从分布式系统的定义中可以了解到从宏观角度看 &lt;code&gt;节点&lt;/code&gt; 和 &lt;code&gt;网络通信&lt;/code&gt; 是最核心的两个概念，下面就从这两个方面展开介绍：&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="读书笔记" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="java中间件" scheme="http://blog.liborange.top/tags/java%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Dubbo 微内核</title>
     <link href="http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/"/>
     <id>http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/</id>
     <published>2017-07-16T16:01:16.000Z</published>
-    <updated>2017-07-18T12:58:56.000Z</updated>
+    <updated>2017-07-21T16:12:20.000Z</updated>
     
     <summary type="html">
     
