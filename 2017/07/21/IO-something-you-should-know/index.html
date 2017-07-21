@@ -98,8 +98,8 @@
 <meta name="description" content="IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。  一次磁盘IO大约经过图中的过程：  DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝">
 <meta name="keywords" content="I&#x2F;O 模型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="磁盘和网络I&#x2F;O工作方式解析">
-<meta property="og:url" content="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/index.html">
+<meta property="og:title" content="IO知多少">
+<meta property="og:url" content="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/index.html">
 <meta property="og:site_name" content="liborange">
 <meta property="og:description" content="IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。  一次磁盘IO大约经过图中的过程：  DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝">
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/ioModel.png">
@@ -107,9 +107,9 @@
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/memoryCache.png">
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/NoZeroCopy.png">
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/zeroCopy.png">
-<meta property="og:updated_time" content="2017-07-21T16:08:50.000Z">
+<meta property="og:updated_time" content="2017-07-21T16:28:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="磁盘和网络I&#x2F;O工作方式解析">
+<meta name="twitter:title" content="IO知多少">
 <meta name="twitter:description" content="IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。  一次磁盘IO大约经过图中的过程：  DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝">
 <meta name="twitter:image" content="http://liborange.qiniudn.com/hexo_post/ioModel.png">
 
@@ -139,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/"/>
+  <link rel="canonical" href="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/"/>
 
 
 
 
 
-  <title>磁盘和网络I/O工作方式解析 | liborange</title>
+  <title>IO知多少 | liborange</title>
   
 
 
@@ -321,7 +321,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/">
+    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liborange">
@@ -338,7 +338,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">磁盘和网络I/O工作方式解析</h1>
+          <h1 class="post-title" itemprop="name headline">IO知多少</h1>
         
 
         <div class="post-meta">
@@ -384,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,940
+                  1,938
                 </span>
               
 
@@ -411,7 +411,7 @@
 <p>一次磁盘IO大约经过图中的过程：</p>
 <ol>
 <li>DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝）</li>
-<li>缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到用户内存中的内容了</li>
+<li>缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到磁盘中的内容了</li>
 </ol>
 <a id="more"></a>
 <h2 id="几个概念"><a href="#几个概念" class="headerlink" title="几个概念"></a>几个概念</h2><h3 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h3><p>先来认识一下上图中的DMA，早期磁盘和内存之间的数据传输需要通过CPU来控制，比如我们想从磁盘加载一个文件，文件内容拷贝过程需要经过CPU存储转发，很显然CPU时间和磁盘读取时间不是一个量级的，这样极容易造成CPU的极度浪费，于是出现了一个专门用于处理数据传输的小伙子DMA，CPU只需要向DMA控制器下达指令，让DMA控制器来处理数据的传送即可。</p>
@@ -496,7 +496,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/" title="磁盘和网络I/O工作方式解析">http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/</a>
+      <a href="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/" title="IO知多少">http://blog.liborange.top/2017/07/21/IO-something-you-should-know/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>

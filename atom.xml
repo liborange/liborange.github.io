@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.liborange.top/"/>
-  <updated>2017-07-21T16:08:50.000Z</updated>
+  <updated>2017-07-21T16:28:29.000Z</updated>
   <id>http://blog.liborange.top/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>磁盘和网络I/O工作方式解析</title>
-    <link href="http://blog.liborange.top/2017/07/21/%E7%A3%81%E7%9B%98%E5%92%8C%E7%BD%91%E7%BB%9CI-O%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%E8%A7%A3%E6%9E%90/"/>
-    <id>http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/</id>
+    <title>IO知多少</title>
+    <link href="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/"/>
+    <id>http://blog.liborange.top/2017/07/21/IO-something-you-should-know/</id>
     <published>2017-07-21T13:22:43.000Z</published>
-    <updated>2017-07-21T16:08:50.000Z</updated>
+    <updated>2017-07-21T16:28:29.000Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,7 @@
 &lt;p&gt;一次磁盘IO大约经过图中的过程：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝）&lt;/li&gt;
-&lt;li&gt;缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到用户内存中的内容了&lt;/li&gt;
+&lt;li&gt;缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到磁盘中的内容了&lt;/li&gt;
 &lt;/ol&gt;
     
     </summary>
@@ -44,7 +44,7 @@
     <link href="http://blog.liborange.top/2017/07/21/%E3%80%8A%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E7%B3%BB%E7%BB%9F%E4%B8%8EJava%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E8%B7%B5%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://blog.liborange.top/2017/07/21/《大型网站系统与Java中间件实践》读书笔记（一）/</id>
     <published>2017-07-21T12:19:47.000Z</published>
-    <updated>2017-07-21T16:12:19.000Z</updated>
+    <updated>2017-07-21T16:28:17.000Z</updated>
     
     <summary type="html">
     

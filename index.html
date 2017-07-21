@@ -315,7 +315,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/21/磁盘和网络I-O工作方式解析/">
+    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liborange">
@@ -334,7 +334,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/21/磁盘和网络I-O工作方式解析/" itemprop="url">磁盘和网络I/O工作方式解析</a></h1>
+                <a class="post-title-link" href="/2017/07/21/IO-something-you-should-know/" itemprop="url">IO知多少</a></h1>
         
 
         <div class="post-meta">
@@ -380,7 +380,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,940
+                  1,938
                 </span>
               
 
@@ -408,11 +408,11 @@
 <p>一次磁盘IO大约经过图中的过程：</p>
 <ol>
 <li>DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝）</li>
-<li>缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到用户内存中的内容了</li>
+<li>缓冲区满，通过read()函数将数据拷贝到用户空间的缓冲区（再一次拷贝），这样用户程序就可以读取到磁盘中的内容了</li>
 </ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/07/21/磁盘和网络I-O工作方式解析/#more" rel="contents">
+            <a class="btn" href="/2017/07/21/IO-something-you-should-know/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -556,7 +556,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,300
+                  2,291
                 </span>
               
 
