@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/memoryCache.png">
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/NoZeroCopy.png">
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/zeroCopy.png">
-<meta property="og:updated_time" content="2017-07-21T16:28:29.000Z">
+<meta property="og:updated_time" content="2017-07-21T16:48:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IO知多少">
 <meta name="twitter:description" content="IO 性能对于一个系统的影响是至关重要的。一个系统经过多项优化以后，瓶颈往往落在数据库；而数据库经过多种优化以后，瓶颈最终会落到 IO 。而 IO 性能的发展，明显落后于 CPU 的发展。 Memchached 也好， NoSql 也好，这些流行技术的背后都在直接或者间接地回避 IO 瓶颈，从而提高系统性能。  一次磁盘IO大约经过图中的过程：  DMA将数据从磁盘拷贝到内核空间的缓冲区（一次拷贝">
@@ -384,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,938
+                  2,348
                 </span>
               
 
@@ -427,8 +427,26 @@
 <p>这个过程有三次数据的拷贝，网卡 -&gt; socket -&gt; kernel -&gt; user，由于网卡-&gt; kernel的拷贝操作系统完成，IO模型关心的是kernel buffer可读，与user buffer可读的两个状态，在不断进化中，产生了五种I/O模型如下图所示，</p>
 <p><img src="http://liborange.qiniudn.com/hexo_post/FiveIOModel.png" alt="五种I/O模型" title="五种I/O模型"></p>
 <p>数据读取过程被划分成了两个阶段：第一阶段等待数据（kernel buffer可读），第二阶段将数据从内核空间拷贝到用户空间。</p>
-<p>前四种模型都会阻塞在第二阶段，区别在于第一阶段的处理策略，可以一直阻塞等待kernel buffer可读（阻塞I/O），有点浪费；也可以不断轮询（非阻塞I/O），稍稍进步了一点，可以在轮询间隔做其他的事情；在第一次检查时绑定事件，满足事件时系统通知线程处理（I/O复用），很大进步更人性化，实现方式有 select，poll，epoll；</p>
-<p>最后一种模型在第二阶段也不会被阻塞，系统调用立即返回，并且进程在等待I/O完成的时候，不会发生阻塞。直到当操作完成的时候内核就会产生相应的信号，并通知给进程。</p>
+<ol>
+<li>阻塞I/O模型</li>
+</ol>
+<p>阻塞I/O模型就是最常用的I/O模型，缺省情况下所有的文件操作都是阻塞的，以Socket来讲解此模型：在用户空间中调用recvfrom，其系统调用直到数据包到达且被复制到应用进程的缓冲区或者发生错误时才返回，在此期间会一直等待，<strong>进程在从调用recvfrom开始到它返回的整段时间内都是被阻塞的</strong>，因此被称为阻塞I/O。</p>
+<ol>
+<li>非阻塞I/O模型</li>
+</ol>
+<p>recvfrom从用户空间到内核空间的时候，如果该缓冲区没有数据的话，就直接返回一个EWOULDBOCK错误，一般都对非阻塞I/O模型进行轮询检查这个状态，<strong>看内核空间是不是有数据到来，有数据到来则从内核空间复制数据到用户空间</strong>。</p>
+<ol>
+<li>I/O复用模型</li>
+</ol>
+<p>Linux提供select/poll，进程通过将一个或者多个fd传递给select或poll系统调用，阻塞在select操作上，这样select/poll可以帮助我们侦测多个fd是否处于就绪状态。select/poll是顺序扫描fd是否就绪，而且支持的fd数量有限，因此它的使用受到了一些制约。Linux还提供了一个epoll系统调用，epoll使用基于事件驱动方式替代顺序扫描，因此性能更高。<strong>当有fd就绪时，立即会掉函数rollback</strong>。</p>
+<ol>
+<li>信号驱动I/O模型</li>
+</ol>
+<p>首先开启Socket信号驱动I/O功能，并通过系统调用sigaction执行一个信号处理函数（此系统调用立即返回，进程继续工作，它是非阻塞的）。当数据准备就绪时，就为进程生成一个SIGIO信号，通过信号会掉通知应用程序调用recvfrom来读取数据，并通知主循环函数来处理数据。</p>
+<ol>
+<li>异步I/O</li>
+</ol>
+<p>告知内核启动某个操作，并让内核在整个操作完成后（包括将数据从内核复制到用户自己的缓冲区）通知开发者。这种模型与信号驱动I/O模型的主要区别是：信号驱动I/O模型由内核通知开发者何时可以开始一个I/O操作，异步I/O模型由内核通知开发者I/O操作何时已经完成。</p>
 <p>目前java NIO，Netty，Redis在IO模型选择上都是用了IO多路复用，可以一次处理更多的链接。同时也要辩证看待这五种模型，如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用multi-threading + blocking IO的web server性能更好，可能延迟还更大。<strong>select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接</strong>。</p>
 <h2 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h2><p>Linux内核提供一种访问磁盘文件的特殊方式，它可以将内存中某块地址空间和我们要指定的磁盘文件相关联，从而把我们对这块内存的访问转换为对磁盘文件的访问，这种技术称为内存映射（Memory Mapping）。</p>
 <p>操作系统将内存中的某一块区域与磁盘中的文件关联起来，当要访问内存中的一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。</p>
