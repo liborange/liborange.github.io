@@ -315,6 +315,179 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/22/Dubbo-rpc-structure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liborange">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://liborange.qiniudn.com/hexo_logo.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liborange">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/Dubbo-rpc-structure/" itemprop="url">Dubbo源码阅读（番外篇）：rpc怎么就这么复杂了</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T10:47:00+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/Dubbo/" itemprop="url" rel="index">
+                    <span itemprop="name">Dubbo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,500
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在<a href="link">《大型网站系统与Java中间件实践》读书笔记（一）</a>一文认识到，随着服务功能野蛮生长，微服务化或者SOA是服务架构的必然趋势，划分出服务边界，将大服务划分成若干小的服务，每个小的服务通过网络通信协作完成功能，构建出分布式系统。分布式系统下每个服务之间如何通信？Restful接口？RPC？异步消息？都可以实现功能，本文主要介绍使用RPC，像调用本地服务一样调用远程服务，需要走多少步。</p>
+<h2 id="初具雏形"><a href="#初具雏形" class="headerlink" title="初具雏形"></a>初具雏形</h2><p>一次基本的RPC过程需要两个角色：服务提供者，服务调用者。为了让调用者调用远程服务时和本地没有差别，很容易想到使用代理的方式实现，将服务地址选择，数据发送，数据接收，解码返回结果的过程使用一个代理类包装起来，对调用方法屏蔽底层实现。同时服务提供者也使用代理的方式提供方法执行以及返回结果的功能，如下图：</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/dubbo_rpc_invoke.jpg" alt="简单的RPC框架" title="Optional title"></p>
+<p>一个简单地RPC服务框架只需要提供者暴露服务，使用者调用，代理模式封装调用过程，即可完成。梁飞在博客里写的一个简单框架：<a href="http://javatar.iteye.com/blog/1123915" target="_blank" rel="external">RPC框架几行代码就够了</a>，一个RPC框架很简单。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/22/Dubbo-rpc-structure/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -650,7 +823,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/17/Dubbo_spi_combine/" itemprop="url">Dubbo 微内核</a></h1>
+                <a class="post-title-link" href="/2017/07/17/Dubbo_spi_combine/" itemprop="url">Dubbo源码一： 微内核</a></h1>
         
 
         <div class="post-meta">
@@ -729,7 +902,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,046
+                  3,183
                 </span>
               
 
@@ -973,7 +1146,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -995,7 +1168,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

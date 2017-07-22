@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.liborange.top/"/>
-  <updated>2017-07-21T16:48:44.000Z</updated>
+  <updated>2017-07-22T03:57:47.000Z</updated>
   <id>http://blog.liborange.top/</id>
   
   <author>
@@ -16,11 +16,38 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Dubbo源码阅读（番外篇）：rpc怎么就这么复杂了</title>
+    <link href="http://blog.liborange.top/2017/07/22/Dubbo-rpc-structure/"/>
+    <id>http://blog.liborange.top/2017/07/22/Dubbo-rpc-structure/</id>
+    <published>2017-07-22T02:47:00.000Z</published>
+    <updated>2017-07-22T03:57:47.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;a href=&quot;link&quot;&gt;《大型网站系统与Java中间件实践》读书笔记（一）&lt;/a&gt;一文认识到，随着服务功能野蛮生长，微服务化或者SOA是服务架构的必然趋势，划分出服务边界，将大服务划分成若干小的服务，每个小的服务通过网络通信协作完成功能，构建出分布式系统。分布式系统下每个服务之间如何通信？Restful接口？RPC？异步消息？都可以实现功能，本文主要介绍使用RPC，像调用本地服务一样调用远程服务，需要走多少步。&lt;/p&gt;
+&lt;h2 id=&quot;初具雏形&quot;&gt;&lt;a href=&quot;#初具雏形&quot; class=&quot;headerlink&quot; title=&quot;初具雏形&quot;&gt;&lt;/a&gt;初具雏形&lt;/h2&gt;&lt;p&gt;一次基本的RPC过程需要两个角色：服务提供者，服务调用者。为了让调用者调用远程服务时和本地没有差别，很容易想到使用代理的方式实现，将服务地址选择，数据发送，数据接收，解码返回结果的过程使用一个代理类包装起来，对调用方法屏蔽底层实现。同时服务提供者也使用代理的方式提供方法执行以及返回结果的功能，如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/dubbo_rpc_invoke.jpg&quot; alt=&quot;简单的RPC框架&quot; title=&quot;Optional title&quot;&gt;&lt;/p&gt;
+&lt;p&gt;一个简单地RPC服务框架只需要提供者暴露服务，使用者调用，代理模式封装调用过程，即可完成。梁飞在博客里写的一个简单框架：&lt;a href=&quot;http://javatar.iteye.com/blog/1123915&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RPC框架几行代码就够了&lt;/a&gt;，一个RPC框架很简单。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="Dubbo" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/Dubbo/"/>
+    
+    
+      <category term="dubbo" scheme="http://blog.liborange.top/tags/dubbo/"/>
+    
+      <category term="rpc" scheme="http://blog.liborange.top/tags/rpc/"/>
+    
+  </entry>
+  
+  <entry>
     <title>IO知多少</title>
     <link href="http://blog.liborange.top/2017/07/21/IO-something-you-should-know/"/>
     <id>http://blog.liborange.top/2017/07/21/IO-something-you-should-know/</id>
     <published>2017-07-21T13:22:43.000Z</published>
-    <updated>2017-07-21T16:48:44.000Z</updated>
+    <updated>2017-07-22T03:57:50.000Z</updated>
     
     <summary type="html">
     
@@ -65,11 +92,11 @@
   </entry>
   
   <entry>
-    <title>Dubbo 微内核</title>
+    <title>Dubbo源码一： 微内核</title>
     <link href="http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/"/>
     <id>http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/</id>
     <published>2017-07-16T16:01:16.000Z</published>
-    <updated>2017-07-21T16:12:20.000Z</updated>
+    <updated>2017-07-22T03:57:49.000Z</updated>
     
     <summary type="html">
     
