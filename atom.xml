@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.liborange.top/"/>
-  <updated>2017-07-23T10:25:08.000Z</updated>
+  <updated>2017-07-23T10:27:12.000Z</updated>
   <id>http://blog.liborange.top/</id>
   
   <author>
@@ -20,12 +20,12 @@
     <link href="http://blog.liborange.top/2017/07/23/%E3%80%8A%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E7%B3%BB%E7%BB%9F%E4%B8%8EJava%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E8%B7%B5%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://blog.liborange.top/2017/07/23/《大型网站系统与Java中间件实践》读书笔记（二）/</id>
     <published>2017-07-23T08:38:10.000Z</published>
-    <updated>2017-07-23T10:25:08.000Z</updated>
+    <updated>2017-07-23T10:27:12.000Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;java中间件，位置不上不下，地位不前不后，但是作为软件胶水，是系统架构不可或缺的一层，屏蔽底层的复杂度，为应用软件提供方便高效的访问效率。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/MidleWare.
+&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/MidleWare.png&quot; alt=&quot;Alt text&quot; title=&quot;引入中间件之后的分布式系统&quot;&gt;&lt;/p&gt;
     
     </summary>
     
@@ -43,12 +43,13 @@
     <link href="http://blog.liborange.top/2017/07/22/dubbo-export-service/"/>
     <id>http://blog.liborange.top/2017/07/22/dubbo-export-service/</id>
     <published>2017-07-22T06:18:08.000Z</published>
-    <updated>2017-07-23T10:23:29.000Z</updated>
+    <updated>2017-07-23T10:27:09.000Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;RPC框架的基本组件包括服务提供方通过export()函数暴露自己的服务，服务消费方通过refer()调用相关的服务，Dubbo服务暴露的流程是什么样的，关注了哪些东西，&lt;/p&gt;
-&lt;h2 id=&quot;Bean管理&quot;&gt;&lt;a href=&quot;#Bean管理&quot; class=&quot;header
+&lt;h2 id=&quot;Bean管理&quot;&gt;&lt;a href=&quot;#Bean管理&quot; class=&quot;headerlink&quot; title=&quot;Bean管理&quot;&gt;&lt;/a&gt;Bean管理&lt;/h2&gt;&lt;p&gt;Dubbo基于Spring可扩展Schema提供的自定义配置支持，将自身，&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/dubbo_rpc_export.jpg&quot; alt=&quot;服务暴露&quot; title=&quot;dubbo rpc  export&quot;&gt;&lt;/p&gt;
     
     </summary>
     
