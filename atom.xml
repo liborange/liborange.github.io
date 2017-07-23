@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.liborange.top/"/>
-  <updated>2017-07-22T03:57:47.000Z</updated>
+  <updated>2017-07-23T10:23:25.000Z</updated>
   <id>http://blog.liborange.top/</id>
   
   <author>
@@ -16,18 +16,39 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Dubbo源码阅读（番外篇）：rpc怎么就这么复杂了</title>
-    <link href="http://blog.liborange.top/2017/07/22/Dubbo-rpc-structure/"/>
-    <id>http://blog.liborange.top/2017/07/22/Dubbo-rpc-structure/</id>
-    <published>2017-07-22T02:47:00.000Z</published>
-    <updated>2017-07-22T03:57:47.000Z</updated>
+    <title>《大型网站系统与Java中间件实践》读书笔记（二）</title>
+    <link href="http://blog.liborange.top/2017/07/23/%E3%80%8A%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E7%B3%BB%E7%BB%9F%E4%B8%8EJava%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E8%B7%B5%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>http://blog.liborange.top/2017/07/23/《大型网站系统与Java中间件实践》读书笔记（二）/</id>
+    <published>2017-07-23T08:38:10.000Z</published>
+    <updated>2017-07-23T10:23:25.000Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;在&lt;a href=&quot;link&quot;&gt;《大型网站系统与Java中间件实践》读书笔记（一）&lt;/a&gt;一文认识到，随着服务功能野蛮生长，微服务化或者SOA是服务架构的必然趋势，划分出服务边界，将大服务划分成若干小的服务，每个小的服务通过网络通信协作完成功能，构建出分布式系统。分布式系统下每个服务之间如何通信？Restful接口？RPC？异步消息？都可以实现功能，本文主要介绍使用RPC，像调用本地服务一样调用远程服务，需要走多少步。&lt;/p&gt;
-&lt;h2 id=&quot;初具雏形&quot;&gt;&lt;a href=&quot;#初具雏形&quot; class=&quot;headerlink&quot; title=&quot;初具雏形&quot;&gt;&lt;/a&gt;初具雏形&lt;/h2&gt;&lt;p&gt;一次基本的RPC过程需要两个角色：服务提供者，服务调用者。为了让调用者调用远程服务时和本地没有差别，很容易想到使用代理的方式实现，将服务地址选择，数据发送，数据接收，解码返回结果的过程使用一个代理类包装起来，对调用方法屏蔽底层实现。同时服务提供者也使用代理的方式提供方法执行以及返回结果的功能，如下图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/dubbo_rpc_invoke.jpg&quot; alt=&quot;简单的RPC框架&quot; title=&quot;Optional title&quot;&gt;&lt;/p&gt;
-&lt;p&gt;一个简单地RPC服务框架只需要提供者暴露服务，使用者调用，代理模式封装调用过程，即可完成。梁飞在博客里写的一个简单框架：&lt;a href=&quot;http://javatar.iteye.com/blog/1123915&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RPC框架几行代码就够了&lt;/a&gt;，一个RPC框架很简单。&lt;/p&gt;
+      &lt;p&gt;java中间件，位置不上不下，地位不前不后，但是作为软件胶水，是系统架构不可或缺的一层，屏蔽底层的复杂度，为应用软件提供方便高效的访问效率。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/path/to/MidleWare.png&quot; alt=&quot;Alt text&quot; title=&quot;引入中
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="读书笔记" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="java中间件" scheme="http://blog.liborange.top/tags/java%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Dubbo源码（二）： 服务暴露</title>
+    <link href="http://blog.liborange.top/2017/07/22/dubbo-export-service/"/>
+    <id>http://blog.liborange.top/2017/07/22/dubbo-export-service/</id>
+    <published>2017-07-22T06:18:08.000Z</published>
+    <updated>2017-07-23T10:23:29.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;RPC框架的基本组件包括服务提供方通过export()函数暴露自己的服务，服务消费方通过refer()调用相关的服务，Dubbo服务暴露的流程是什么样的，关注了哪些东西，&lt;/p&gt;
+&lt;h2 id=&quot;Bean管理&quot;&gt;&lt;a href=&quot;#Bean管理&quot; class=&quot;header
     
     </summary>
     
@@ -38,7 +59,7 @@
     
       <category term="dubbo" scheme="http://blog.liborange.top/tags/dubbo/"/>
     
-      <category term="rpc" scheme="http://blog.liborange.top/tags/rpc/"/>
+      <category term="spi" scheme="http://blog.liborange.top/tags/spi/"/>
     
   </entry>
   
@@ -92,11 +113,11 @@
   </entry>
   
   <entry>
-    <title>Dubbo源码一： 微内核</title>
+    <title>Dubbo源码（一）： 微内核</title>
     <link href="http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/"/>
     <id>http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/</id>
     <published>2017-07-16T16:01:16.000Z</published>
-    <updated>2017-07-22T03:57:49.000Z</updated>
+    <updated>2017-07-22T06:13:16.000Z</updated>
     
     <summary type="html">
     
@@ -114,6 +135,32 @@
       <category term="dubbo" scheme="http://blog.liborange.top/tags/dubbo/"/>
     
       <category term="spi" scheme="http://blog.liborange.top/tags/spi/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Dubbo源码（开篇）：rpc怎么就这么复杂了</title>
+    <link href="http://blog.liborange.top/2017/07/17/Dubbo-rpc-structure/"/>
+    <id>http://blog.liborange.top/2017/07/17/Dubbo-rpc-structure/</id>
+    <published>2017-07-16T16:00:00.000Z</published>
+    <updated>2017-07-22T06:12:03.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;pre&gt;&lt;code&gt;如果你对故事结果不满意，答案总能在开头找到，千万谨记，不要虎头蛇尾。            -火星情报局
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&quot;http://liborange.qiniudn.com/hexo_post/shellwebegin.png&quot; alt=&quot;Shell we begin?&quot; title=&quot;Shell we begin?&quot;&gt;&lt;/p&gt;
+&lt;p&gt;在&lt;a href=&quot;link&quot;&gt;《大型网站系统与Java中间件实践》读书笔记（一）&lt;/a&gt;一文认识到，随着服务功能野蛮生长，微服务化或者SOA是服务架构的必然趋势，划分出服务边界，将大服务划分成若干小的服务，每个小的服务通过网络通信协作完成功能，构建出分布式系统。分布式系统下每个服务之间如何通信？Restful接口？RPC？异步消息？都可以实现功能，本文主要介绍使用RPC，像调用本地服务一样调用远程服务，需要走多少步。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="分布式" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="Dubbo" scheme="http://blog.liborange.top/categories/%E5%88%86%E5%B8%83%E5%BC%8F/Dubbo/"/>
+    
+    
+      <category term="dubbo" scheme="http://blog.liborange.top/tags/dubbo/"/>
+    
+      <category term="rpc" scheme="http://blog.liborange.top/tags/rpc/"/>
     
   </entry>
   

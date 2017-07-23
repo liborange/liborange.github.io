@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="赤铁 脑洞" />
+  <meta name="keywords" content="java中间件," />
 
 
 
@@ -95,16 +95,28 @@
 
 
 
-<meta name="description" content="第一篇，下周就有 权力的游戏 看了。">
+<meta name="description" content="java中间件，位置不上不下，地位不前不后，但是作为软件胶水，是系统架构不可或缺的一层，屏蔽底层的复杂度，为应用软件提供方便高效的访问效率。  构建中间件的java基础 垃圾回收与堆内存分配 线程池 synchronized关键字 ReentrantLock volatile wait，notify，notifyAll CountDownLatch，CyclicBarrier，Semaphore">
+<meta name="keywords" content="java中间件">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://blog.liborange.top/2017/07/17/hello-world/index.html">
+<meta property="og:title" content="《大型网站系统与Java中间件实践》读书笔记（二）">
+<meta property="og:url" content="http://blog.liborange.top/2017/07/23/《大型网站系统与Java中间件实践》读书笔记（二）/index.html">
 <meta property="og:site_name" content="liborange">
-<meta property="og:description" content="第一篇，下周就有 权力的游戏 看了。">
-<meta property="og:updated_time" content="2017-07-18T09:28:10.000Z">
+<meta property="og:description" content="java中间件，位置不上不下，地位不前不后，但是作为软件胶水，是系统架构不可或缺的一层，屏蔽底层的复杂度，为应用软件提供方便高效的访问效率。  构建中间件的java基础 垃圾回收与堆内存分配 线程池 synchronized关键字 ReentrantLock volatile wait，notify，notifyAll CountDownLatch，CyclicBarrier，Semaphore">
+<meta property="og:image" content="http://blog.liborange.top/path/to/MidleWare.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/provider.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/providerJob.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/providerThreadPool.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/structupdate.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/APmodel.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/dbStructure.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/mq-c.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/mq-error-status.png">
+<meta property="og:image" content="http://liborange.qiniudn.com/hexo_post/mq-scale.png">
+<meta property="og:updated_time" content="2017-07-23T10:23:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="第一篇，下周就有 权力的游戏 看了。">
+<meta name="twitter:title" content="《大型网站系统与Java中间件实践》读书笔记（二）">
+<meta name="twitter:description" content="java中间件，位置不上不下，地位不前不后，但是作为软件胶水，是系统架构不可或缺的一层，屏蔽底层的复杂度，为应用软件提供方便高效的访问效率。  构建中间件的java基础 垃圾回收与堆内存分配 线程池 synchronized关键字 ReentrantLock volatile wait，notify，notifyAll CountDownLatch，CyclicBarrier，Semaphore">
+<meta name="twitter:image" content="http://blog.liborange.top/path/to/MidleWare.png">
 
 
 
@@ -132,13 +144,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.liborange.top/2017/07/17/hello-world/"/>
+  <link rel="canonical" href="http://blog.liborange.top/2017/07/23/《大型网站系统与Java中间件实践》读书笔记（二）/"/>
 
 
 
 
 
-  <title>Hello World | liborange</title>
+  <title>《大型网站系统与Java中间件实践》读书笔记（二） | liborange</title>
   
 
 
@@ -314,7 +326,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/17/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://blog.liborange.top/2017/07/23/《大型网站系统与Java中间件实践》读书笔记（二）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liborange">
@@ -331,7 +343,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">《大型网站系统与Java中间件实践》读书笔记（二）</h1>
         
 
         <div class="post-meta">
@@ -343,8 +355,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T00:00:00+08:00">
-                2017-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-23T16:38:10+08:00">
+                2017-07-23
               </time>
             
 
@@ -353,6 +365,39 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/读书笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">读书笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -377,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  14
+                  703
                 </span>
               
 
@@ -399,7 +444,101 @@
       
 
       
-        <p>第一篇，下周就有 权力的游戏 看了。</p>
+        <p>java中间件，位置不上不下，地位不前不后，但是作为软件胶水，是系统架构不可或缺的一层，屏蔽底层的复杂度，为应用软件提供方便高效的访问效率。</p>
+<p><img src="/path/to/MidleWare.png" alt="Alt text" title="引入中间件之后的分布式系统"></p>
+<h2 id="构建中间件的java基础"><a href="#构建中间件的java基础" class="headerlink" title="构建中间件的java基础"></a>构建中间件的java基础</h2><ul>
+<li>垃圾回收与堆内存分配</li>
+<li>线程池</li>
+<li>synchronized关键字</li>
+<li>ReentrantLock</li>
+<li>volatile</li>
+<li>wait，notify，notifyAll</li>
+<li>CountDownLatch，CyclicBarrier，Semaphore</li>
+<li>Exchanger</li>
+<li>Future,FutureTask</li>
+<li>juc包下的容器类</li>
+<li>动态代理，反射</li>
+</ul>
+<h2 id="服务框架"><a href="#服务框架" class="headerlink" title="服务框架"></a>服务框架</h2><p>应用从集中式走向分布式面临的问题是通信</p>
+<ul>
+<li>控制器解决寻址问题：名称服务，规则服务</li>
+<li>序列化：java序列化（低效且大且不跨语言），Thrift</li>
+<li>通信：socket</li>
+</ul>
+<h3 id="服务提供方"><a href="#服务提供方" class="headerlink" title="服务提供方"></a>服务提供方</h3><p><img src="http://liborange.qiniudn.com/hexo_post/provider.png" alt="Alt text" title="Optional title"></p>
+<p>服务框架三个基础属性：</p>
+<ol>
+<li>interfaceName：接口定义，也就会具体的调用方法啦</li>
+<li>version：版本问题</li>
+<li>group：同一个接口的远程服务有多个机器，可以把这些机器分成一组。</li>
+</ol>
+<h3 id="通信方式"><a href="#通信方式" class="headerlink" title="通信方式"></a>通信方式</h3><ul>
+<li>Classloader机制解决jar包冲突</li>
+<li>加入注册中心</li>
+<li>引入基于接口，方法的路由</li>
+<li>调用端流控</li>
+<li>序列化与反序列化</li>
+<li>网络通信：BIO,NIO,异步调用（只发送不取结果；基于Future实现，汇总结果）</li>
+</ul>
+<p>服务提供端设计实现</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/providerJob.png" alt="Alt text" title="Optional title"></p>
+<p>不通方法提供不通线程池提高效率</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/providerThreadPool.png" alt="Alt text" title="Optional title"></p>
+<p>服务提供端流控</p>
+<p>服务升级，使用version解决</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ul>
+<li>添加缓存</li>
+<li>请求合并</li>
+</ul>
+<h3 id="服务治理"><a href="#服务治理" class="headerlink" title="服务治理"></a>服务治理</h3><ul>
+<li>服务路由</li>
+<li>服务限流降级</li>
+<li>服务归组</li>
+<li>服务授权</li>
+<li>服务线程池</li>
+</ul>
+<p><img src="http://liborange.qiniudn.com/hexo_post/structupdate.png" alt="Alt text" title="引入服务架构后的结构变化"></p>
+<h2 id="数据访问层"><a href="#数据访问层" class="headerlink" title="数据访问层"></a>数据访问层</h2><h3 id="垂直拆分"><a href="#垂直拆分" class="headerlink" title="垂直拆分"></a>垂直拆分</h3><p>垂直拆分：将不同的表放在不同的数据库中</p>
+<p>垂直拆分好处：效率<br>垂直拆分坏处：单机ACID被破坏；join操作变得困难</p>
+<h3 id="水平拆分"><a href="#水平拆分" class="headerlink" title="水平拆分"></a>水平拆分</h3><p>水平拆分：将同一个表的数据放在不同的数据库中</p>
+<p>好处：容量<br>坏处：ACID，JOIN，主键生成复杂，查询需要跨库</p>
+<p>Sequence问题：自增id如何保证<code>连续</code>与<code>唯一</code></p>
+<p>单独引入id生成器的单位</p>
+<p>跨库查询策略：多库查询，归并排序</p>
+<h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><ul>
+<li>主从复制</li>
+<li>数据平滑迁移</li>
+</ul>
+<h3 id="分布式事务："><a href="#分布式事务：" class="headerlink" title="分布式事务："></a>分布式事务：</h3><p>事务模型与规范：</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/APmodel.png" alt="Alt text" title="分布式事务的三个组件"></p>
+<ul>
+<li>应用程序（AP）:事务执行操作的服务</li>
+<li>资源管理器（RM）:消息服务器管理系统</li>
+<li>事务管理器(TM): 协调事务，管理事务生命周期</li>
+</ul>
+<p>一致性算法：两阶段提交</p>
+<p>分布式理论：CAP、BASE理论</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/dbStructure.png" alt="Alt text" title="数据层结构图"></p>
+<h2 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h2><p>作用：解耦，保证一致性</p>
+<p>一致性解决方案：</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/mq-c.png" alt="Alt text" title="消息最终一致性"></p>
+<p>可能出现的异常情况：</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/mq-error-status.png" alt="Alt text" title="异常情况"></p>
+<p>消息持久化：</p>
+<ul>
+<li>基于文件存储</li>
+<li>基于数据库存储</li>
+<li>主备存储</li>
+</ul>
+<p>重复消息：幂等解决</p>
+<ul>
+<li>恰好一次</li>
+<li>至少一次</li>
+<li>最多一次</li>
+</ul>
+<p>保证顺序消费：消息发送到同一个消费者</p>
+<p>扩容：</p>
+<p><img src="http://liborange.qiniudn.com/hexo_post/mq-scale.png" alt="Alt text" title="扩容"></p>
 
       
     </div>
@@ -449,7 +588,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blog.liborange.top/2017/07/17/hello-world/" title="Hello World">http://blog.liborange.top/2017/07/17/hello-world/</a>
+      <a href="http://blog.liborange.top/2017/07/23/《大型网站系统与Java中间件实践》读书笔记（二）/" title="《大型网站系统与Java中间件实践》读书笔记（二）">http://blog.liborange.top/2017/07/23/《大型网站系统与Java中间件实践》读书笔记（二）/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -463,6 +602,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/java中间件/" rel="tag"># java中间件</a>
+          
+        </div>
+      
 
       
       
@@ -472,15 +617,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/07/22/dubbo-export-service/" rel="next" title="Dubbo源码（二）： 服务暴露">
+                <i class="fa fa-chevron-left"></i> Dubbo源码（二）： 服务暴露
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/17/Dubbo-rpc-structure/" rel="prev" title="Dubbo源码（开篇）：rpc怎么就这么复杂了">
-                Dubbo源码（开篇）：rpc怎么就这么复杂了 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -528,8 +673,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://liborange.qiniudn.com/hexo_logo.jpeg"
@@ -598,6 +752,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建中间件的java基础"><span class="nav-number">1.</span> <span class="nav-text">构建中间件的java基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务框架"><span class="nav-number">2.</span> <span class="nav-text">服务框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务提供方"><span class="nav-number">2.1.</span> <span class="nav-text">服务提供方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通信方式"><span class="nav-number">2.2.</span> <span class="nav-text">通信方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化"><span class="nav-number">2.3.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务治理"><span class="nav-number">2.4.</span> <span class="nav-text">服务治理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据访问层"><span class="nav-number">3.</span> <span class="nav-text">数据访问层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#垂直拆分"><span class="nav-number">3.1.</span> <span class="nav-text">垂直拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#水平拆分"><span class="nav-number">3.2.</span> <span class="nav-text">水平拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写分离"><span class="nav-number">3.3.</span> <span class="nav-text">读写分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式事务："><span class="nav-number">3.4.</span> <span class="nav-text">分布式事务：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息中间件"><span class="nav-number">4.</span> <span class="nav-text">消息中间件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

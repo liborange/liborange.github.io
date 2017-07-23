@@ -98,14 +98,14 @@
 <meta name="description" content="Dubbo 是一个开放的系统，有多种通讯框架（Mina/Netty/Grizzly），多种序列化协议（Hessian/JSON/PB），多种远程调用协议（DBO/RMI/WS）去支持，从(服务框架实践与探索)[]可以了解到从设计之初就设计为微内核+插件的方式，系统或者用户有多种实现，通过插件方式选择实现，灵活度很高。 微内核的实现也从Dubbo 1使用的OSGI，过渡到Dubbo2使用的SPI。S">
 <meta name="keywords" content="dubbo,spi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dubbo源码一： 微内核">
+<meta property="og:title" content="Dubbo源码（一）： 微内核">
 <meta property="og:url" content="http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/index.html">
 <meta property="og:site_name" content="liborange">
 <meta property="og:description" content="Dubbo 是一个开放的系统，有多种通讯框架（Mina/Netty/Grizzly），多种序列化协议（Hessian/JSON/PB），多种远程调用协议（DBO/RMI/WS）去支持，从(服务框架实践与探索)[]可以了解到从设计之初就设计为微内核+插件的方式，系统或者用户有多种实现，通过插件方式选择实现，灵活度很高。 微内核的实现也从Dubbo 1使用的OSGI，过渡到Dubbo2使用的SPI。S">
 <meta property="og:image" content="http://liborange.qiniudn.com/hexo_ExtensionLoader.png">
-<meta property="og:updated_time" content="2017-07-22T03:57:49.000Z">
+<meta property="og:updated_time" content="2017-07-22T06:13:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dubbo源码一： 微内核">
+<meta name="twitter:title" content="Dubbo源码（一）： 微内核">
 <meta name="twitter:description" content="Dubbo 是一个开放的系统，有多种通讯框架（Mina/Netty/Grizzly），多种序列化协议（Hessian/JSON/PB），多种远程调用协议（DBO/RMI/WS）去支持，从(服务框架实践与探索)[]可以了解到从设计之初就设计为微内核+插件的方式，系统或者用户有多种实现，通过插件方式选择实现，灵活度很高。 微内核的实现也从Dubbo 1使用的OSGI，过渡到Dubbo2使用的SPI。S">
 <meta name="twitter:image" content="http://liborange.qiniudn.com/hexo_ExtensionLoader.png">
 
@@ -141,7 +141,7 @@
 
 
 
-  <title>Dubbo源码一： 微内核 | liborange</title>
+  <title>Dubbo源码（一）： 微内核 | liborange</title>
   
 
 
@@ -334,7 +334,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Dubbo源码一： 微内核</h1>
+          <h1 class="post-title" itemprop="name headline">Dubbo源码（一）： 微内核</h1>
         
 
         <div class="post-meta">
@@ -563,7 +563,7 @@ javassist=com.alibaba.dubbo.common.compiler.support.JavassistCompiler
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/" title="Dubbo源码一： 微内核">http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/</a>
+      <a href="http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/" title="Dubbo源码（一）： 微内核">http://blog.liborange.top/2017/07/17/Dubbo_spi_combine/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -594,8 +594,8 @@ javassist=com.alibaba.dubbo.common.compiler.support.JavassistCompiler
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/17/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/07/17/Dubbo-rpc-structure/" rel="next" title="Dubbo源码（开篇）：rpc怎么就这么复杂了">
+                <i class="fa fa-chevron-left"></i> Dubbo源码（开篇）：rpc怎么就这么复杂了
               </a>
             
           </div>
@@ -679,7 +679,7 @@ javassist=com.alibaba.dubbo.common.compiler.support.JavassistCompiler
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
