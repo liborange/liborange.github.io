@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.liborange.top/"/>
-  <updated>2017-07-23T10:34:12.000Z</updated>
+  <updated>2017-07-30T16:08:36.000Z</updated>
   <id>http://blog.liborange.top/</id>
   
   <author>
@@ -14,6 +14,25 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>读懂交易和投资</title>
+    <link href="http://blog.liborange.top/2017/07/30/Economic-and-Investment/"/>
+    <id>http://blog.liborange.top/2017/07/30/Economic-and-Investment/</id>
+    <published>2017-07-30T14:38:04.000Z</published>
+    <updated>2017-07-30T16:08:36.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=MtKHKPCy0cI&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;youtube视频链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;一个周末没有看书，不知所措的度过了，今天晚上看了一个讲解经
+    
+    </summary>
+    
+    
+      <category term="经济" scheme="http://blog.liborange.top/tags/%E7%BB%8F%E6%B5%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>《大型网站系统与Java中间件实践》读书笔记（二）</title>
